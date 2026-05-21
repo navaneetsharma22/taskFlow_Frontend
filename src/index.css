@@ -17,6 +17,7 @@
 
   --color-darkBg-950: #0f172a;
   --color-darkBg-900: #1e293b;
+  --color-darkBg-850: #1e293b;
   --color-darkBg-800: #334155;
   --color-darkBg-700: #475569;
 
@@ -178,3 +179,32 @@
 .dark .glow-effect::before {
   box-shadow: 0 0 25px 3px rgba(37, 99, 235, 0.2);
 }
+
+/* 🏢 Stripe Aesthetic: Vibrant gradients and high-conversion elements */
+.stripe-gradient {
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #6366f1 100%) !important;
+}
+
+.stripe-card {
+  @apply bg-white dark:bg-darkBg-900 border border-slate-100 dark:border-darkBg-850 shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)];
+}
+
+/* 📟 Linear Aesthetic: High-density dark UI with radial borders */
+.linear-card {
+  @apply bg-white dark:bg-darkBg-900 border border-slate-200/20 dark:border-darkBg-800/40 shadow-sm transition-all hover:border-slate-300 dark:hover:border-darkBg-800;
+}
+
+/* 💻 Vercel Aesthetic: Ultra-minimal monospaced high-contrast styling */
+.vercel-badge {
+  @apply font-mono text-[9px] uppercase tracking-widest font-black py-0.5 px-2 bg-black text-white dark:bg-white dark:text-black rounded;
+}
+
+/* 📝 Notion Aesthetic: Clean inline layout controls and minimal dividers */
+.notion-inline {
+  @apply border-b border-slate-100 dark:border-darkBg-850/50 pb-2 mb-2;
+}
+
+.notion-text {
+  @apply tracking-tight leading-relaxed text-slate-800 dark:text-slate-200;
+}
+
