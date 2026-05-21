@@ -1,37 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c084fc;
-  --color-brand-400: #a855f7;
-  --color-brand-500: #8b5cf6;
-  --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
-  --color-brand-900: #4c1d95;
-  --color-brand-950: #0b0f19;
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #2563eb;
+  --color-brand-600: #1d4ed8;
+  --color-brand-700: #1e40af;
+  --color-brand-800: #1e3a8a;
+  --color-brand-900: #172554;
+  --color-brand-950: #0f172a;
 
-  --color-darkBg-950: #07090e;
-  --color-darkBg-900: #0f131a;
-  --color-darkBg-800: #1a1f2c;
-  --color-darkBg-700: #252b3d;
+  --color-darkBg-950: #0f172a;
+  --color-darkBg-900: #1e293b;
+  --color-darkBg-800: #334155;
+  --color-darkBg-700: #475569;
 
-  --color-slate-950: #030712;
+  --color-slate-950: #0f172a;
 
-  --font-sans: 'Plus Jakarta Sans', 'Inter', 'sans-serif';
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  --font-sans: 'Inter', 'system-ui', 'sans-serif';
 
   --animate-fade-in: fadeIn 0.2s ease-out;
   --animate-slide-up: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-pulse-subtle: pulseSubtle 2s infinite ease-in-out;
+  --animate-shimmer: shimmer 1.5s infinite linear;
 
-  --shadow-premium: 0 8px 30px rgb(0, 0, 0, 0.04);
-  --shadow-premium-hover: 0 20px 40px rgb(0, 0, 0, 0.08);
-  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-  --shadow-glass-dark: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-premium: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 8px -1px rgba(15, 23, 42, 0.03);
+  --shadow-premium-hover: 0 12px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+  --shadow-glass-dark: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
 
   @keyframes fadeIn {
     0% { opacity: 0; }
@@ -45,18 +50,22 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.85; }
   }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
 }
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200;
+    @apply bg-slate-50 text-slate-950 font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200;
   }
   body.dark {
     @apply bg-darkBg-950 text-slate-100;
   }
 }
 
-/* Premium custom scrollbar styling */
+/* Scrollbar configuration conforming to slate-900 / slates */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -74,28 +83,71 @@
   @apply bg-darkBg-800 rounded-full hover:bg-darkBg-700;
 }
 
-/* Custom Glassmorphism Utilities */
+/* 16px Border Radius Standard Configurations */
+.rounded-16 {
+  border-radius: 16px !important;
+}
+
+/* Custom Glassmorphism Panels & Cards conforming to 16px (rounded-2xl is exactly 16px) */
 .glass-panel {
-  @apply bg-white/70 backdrop-blur-md border border-slate-100 shadow-premium;
+  @apply bg-white/80 backdrop-blur-md border border-slate-200/20 shadow-premium rounded-2xl;
 }
 
 .dark .glass-panel {
-  @apply bg-darkBg-900/60 backdrop-blur-md border border-darkBg-800/50 shadow-glass-dark;
+  @apply bg-darkBg-900/80 backdrop-blur-md border border-darkBg-800/40 shadow-glass-dark rounded-2xl;
 }
 
 .glass-card {
-  @apply bg-white/40 backdrop-blur-sm border border-slate-100/50 transition-all duration-300;
+  @apply bg-white/65 backdrop-blur-sm border border-slate-200/20 transition-all duration-300 rounded-2xl;
 }
 
 .dark .glass-card {
-  @apply bg-darkBg-900/30 backdrop-blur-sm border border-darkBg-800/30 transition-all duration-300;
+  @apply bg-darkBg-900/60 backdrop-blur-sm border border-darkBg-800/30 transition-all duration-300 rounded-2xl;
 }
 
 .active-nav-link {
-  @apply text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-950/40 font-semibold;
+  @apply text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-900/20 font-semibold;
 }
 
-/* Animated glow effects */
+/* Design System: Standard Loading Skeleton Styles */
+.skeleton-box {
+  @apply relative overflow-hidden bg-slate-200/60 dark:bg-darkBg-800 rounded-lg;
+}
+
+.skeleton-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+.dark .skeleton-box::after {
+  background-image: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0) 0%,
+    rgba(30, 41, 59, 0.2) 20%,
+    rgba(30, 41, 59, 0.4) 60%,
+    rgba(30, 41, 59, 0) 100%
+  );
+}
+
+/* Empty State Styling utilities */
+.empty-state-container {
+  @apply flex flex-col items-center justify-center text-center p-8 border border-dashed border-slate-200 dark:border-darkBg-800 rounded-2xl bg-white/30 dark:bg-darkBg-900/20;
+}
+
+/* Spacing and visual glows */
 .glow-effect {
   position: relative;
 }
@@ -108,7 +160,7 @@
   right: 0;
   bottom: 0;
   border-radius: inherit;
-  box-shadow: 0 0 20px 2px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 20px 2px rgba(37, 99, 235, 0.12);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -119,5 +171,5 @@
 }
 
 .dark .glow-effect::before {
-  box-shadow: 0 0 25px 3px rgba(168, 85, 247, 0.25);
+  box-shadow: 0 0 25px 3px rgba(37, 99, 235, 0.2);
 }
