@@ -118,7 +118,7 @@ const DashboardLayout = () => {
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
     { name: 'AI Assistant', path: '/ai', icon: Sparkles },
     { name: 'Automation', path: '/automation', icon: Cpu },
-    { name: 'Notifications', path: '#notifications', icon: Bell, action: () => setNotifDrawerOpen(true), count: unreadCount },
+    { name: 'Notifications', path: '/notifications', icon: Bell, count: unreadCount },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
