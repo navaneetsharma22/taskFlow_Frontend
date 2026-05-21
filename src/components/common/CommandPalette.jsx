@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { toggleDarkMode } from '../../redux/slices/uiSlice';
 import { addNotification } from '../../redux/slices/notificationSlice';
+import Badge from './Badge';
 
 const CommandPalette = ({ isOpen, onClose }) => {
   const navigate = useNavigate();

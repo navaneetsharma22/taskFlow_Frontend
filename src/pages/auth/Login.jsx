@@ -23,8 +23,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
   
-  const [email, setEmail] = useState('admin@taskflow.so');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [validationError, setValidationError] = useState('');
 
@@ -35,32 +35,40 @@ const Login = () => {
       return;
     }
 
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setValidationError('Please enter a valid email address');
+      return;
+    }
+
     dispatch(loginStart());
     
-    // Simulate high-fidelity secure token generation response
+    // TODO: Replace with real API call:
+    // API.post('/auth/login', { email, password })
+    //   .then(res => { dispatch(loginSuccess(res.data)); navigate('/dashboard'); })
+    //   .catch(err => { dispatch(loginFailure(err.response?.data?.message)); });
+    
+    // Demo mode — simulated login
     setTimeout(() => {
-      if (email.includes('@')) {
-        const mockResponse = {
-          token: 'mock-jwt-token-taskflow-saas-2026',
-          user: {
-            id: 'usr-101',
-            name: 'Sarah Connor',
-            email: email,
-            avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-            role: 'Administrator',
-            organization: {
-              id: 'org-101',
-              name: 'Cyberdyne Systems',
-              code: 'TF-CYB-4088',
-              membersCount: 15,
-            }
+      const mockResponse = {
+        token: `tf_${Date.now()}_${Math.random().toString(36).substring(2)}`,
+        user: {
+          id: 'usr-101',
+          name: 'Sarah Connor',
+          email: email,
+          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+          role: 'organization_admin',
+          organization: {
+            id: 'org-101',
+            name: 'Cyberdyne Systems',
+            code: 'TF-CYB-4088',
+            membersCount: 15,
           }
-        };
-        dispatch(loginSuccess(mockResponse));
-        navigate('/dashboard');
-      } else {
-        dispatch(loginFailure('Invalid credential parameters provided.'));
-      }
+        }
+      };
+      dispatch(loginSuccess(mockResponse));
+      navigate('/dashboard');
     }, 1000);
   };
 

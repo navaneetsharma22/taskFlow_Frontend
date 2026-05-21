@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AnimatePresence } from 'framer-motion';
 import { 
   Building2, 
   Users, 
@@ -53,6 +54,7 @@ const SuperAdmin = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentEditOrg, setCurrentEditOrg] = useState(null);
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // { id, name } or null
 
   // Form parameters
   const [editName, setEditName] = useState('');
@@ -86,14 +88,20 @@ const SuperAdmin = () => {
     }));
   };
 
-  // Delete Action
+  // Delete Action — requires confirmation
   const handleDeleteOrg = (orgId, orgName) => {
-    setOrganizations(prev => prev.filter(org => org.id !== orgId));
+    setDeleteConfirm({ id: orgId, name: orgName });
+  };
+
+  const confirmDeleteOrg = () => {
+    if (!deleteConfirm) return;
+    setOrganizations(prev => prev.filter(org => org.id !== deleteConfirm.id));
     dispatch(addNotification({
       title: 'Tenant Workspace Terminated',
-      description: `Tenant workspace "${orgName}" has been successfully decommissioned.`,
+      description: `Tenant workspace "${deleteConfirm.name}" has been successfully decommissioned.`,
       type: 'danger'
     }));
+    setDeleteConfirm(null);
   };
 
   // Open Edit Modal
@@ -616,6 +624,48 @@ const SuperAdmin = () => {
                 </Button>
               </div>
             </form>
+          </Modal>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {deleteConfirm && (
+          <Modal
+            isOpen={!!deleteConfirm}
+            onClose={() => setDeleteConfirm(null)}
+            title="Confirm Tenant Deletion"
+          >
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 p-3.5 bg-red-50 dark:bg-red-950/20 border border-red-100/10 rounded-xl">
+                <AlertTriangle className="w-5 h-5 text-red-500 shrink-0" />
+                <p className="text-[10.5px] text-red-700 dark:text-red-400 font-semibold leading-relaxed">
+                  This action is <span className="font-extrabold">irreversible</span>. All data, users, projects, and tasks belonging to 
+                  <span className="font-extrabold"> "{deleteConfirm.name}"</span> will be permanently destroyed.
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-2.5 pt-2">
+                <Button 
+                  type="button" 
+                  variant="gray" 
+                  size="sm" 
+                  onClick={() => setDeleteConfirm(null)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="primary" 
+                  size="sm"
+                  className="font-bold !bg-red-500 hover:!bg-red-600 flex items-center gap-1"
+                  onClick={confirmDeleteOrg}
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Confirm Delete
+                </Button>
+              </div>
+            </div>
           </Modal>
         )}
       </AnimatePresence>
