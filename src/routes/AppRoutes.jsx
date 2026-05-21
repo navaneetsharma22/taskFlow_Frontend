@@ -17,6 +17,7 @@ import Organization from '../pages/organization/Organization';
 import Settings from '../pages/settings/Settings';
 import Profile from '../pages/profile/Profile';
 import DesignSystem from '../pages/settings/DesignSystem';
+import Automation from '../pages/automation/Automation';
 
 const AppRoutes = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -36,6 +37,7 @@ const AppRoutes = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/design-system" element={<DesignSystem />} />
+        <Route path="/automation" element={<Automation />} />
         
         {/* Default route redirect */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
