@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c084fc;
+  --color-brand-400: #a855f7;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #4c1d95;
+  --color-brand-950: #0b0f19;
+
+  --color-darkBg-950: #07090e;
+  --color-darkBg-900: #0f131a;
+  --color-darkBg-800: #1a1f2c;
+  --color-darkBg-700: #252b3d;
+
+  --color-slate-950: #030712;
+
+  --font-sans: 'Plus Jakarta Sans', 'Inter', 'sans-serif';
+
+  --animate-fade-in: fadeIn 0.2s ease-out;
+  --animate-slide-up: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-pulse-subtle: pulseSubtle 2s infinite ease-in-out;
+
+  --shadow-premium: 0 8px 30px rgb(0, 0, 0, 0.04);
+  --shadow-premium-hover: 0 20px 40px rgb(0, 0, 0, 0.08);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --shadow-glass-dark: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes slideUp {
+    0% { transform: translateY(8px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes pulseSubtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200;
+  }
+  body.dark {
+    @apply bg-darkBg-950 text-slate-100;
+  }
+}
+
+/* Premium custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-darkBg-800 rounded-full hover:bg-darkBg-700;
+}
+
+/* Custom Glassmorphism Utilities */
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-md border border-slate-100 shadow-premium;
+}
+
+.dark .glass-panel {
+  @apply bg-darkBg-900/60 backdrop-blur-md border border-darkBg-800/50 shadow-glass-dark;
+}
+
+.glass-card {
+  @apply bg-white/40 backdrop-blur-sm border border-slate-100/50 transition-all duration-300;
+}
+
+.dark .glass-card {
+  @apply bg-darkBg-900/30 backdrop-blur-sm border border-darkBg-800/30 transition-all duration-300;
+}
+
+.active-nav-link {
+  @apply text-brand-600 bg-brand-50 dark:text-brand-400 dark:bg-brand-950/40 font-semibold;
+}
+
+/* Animated glow effects */
+.glow-effect {
+  position: relative;
+}
+
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 20px 2px rgba(139, 92, 246, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.glow-effect:hover::before {
+  opacity: 1;
+}
+
+.dark .glow-effect::before {
+  box-shadow: 0 0 25px 3px rgba(168, 85, 247, 0.25);
+}
