@@ -42,20 +42,24 @@ const Login = () => {
       return;
     }
 
+    // Direct administrative credentials to the secure administrative portal
+    if (email.toLowerCase() === 'navaneetsharma22@gmail.com') {
+      setValidationError('Administrative portal access detected. Please log in via the Secure Admin Gateway (/superadmin).');
+      return;
+    }
+
     dispatch(loginStart());
     
     // TODO: Replace with real API call:
-    // API.post('/auth/login', { email, password })
-    //   .then(res => { dispatch(loginSuccess(res.data)); navigate('/dashboard'); })
-    //   .catch(err => { dispatch(loginFailure(err.response?.data?.message)); });
+    // API.post('/api/auth/login', { email, password })
     
-    // Demo mode — simulated login
+    // Demo mode — simulated login with role-based routing
     setTimeout(() => {
       const mockResponse = {
         token: `tf_${Date.now()}_${Math.random().toString(36).substring(2)}`,
         user: {
-          id: 'usr-101',
-          name: 'Sarah Connor',
+          id: `usr-${Date.now()}`,
+          name: email.split('@')[0],
           email: email,
           avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
           role: 'organization_admin',

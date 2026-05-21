@@ -1,24 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 /**
- * Mock user data — used only for development/demo purposes.
- * In production, initialState starts empty and is populated via login API.
- */
-const mockUser = {
-  id: 'usr-101',
-  name: 'Sarah Connor',
-  email: 'sarah.connor@taskflow.so',
-  avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  role: 'organization_admin',
-  organization: {
-    id: 'org-909',
-    name: 'Cyberdyne Systems',
-    code: 'CYB-DX9-2026',
-    membersCount: 12,
-  }
-};
-
-/**
  * Check if there's a persisted auth session in sessionStorage.
  * Uses sessionStorage (not localStorage) to reduce XSS token exposure surface.
  */
@@ -46,21 +28,13 @@ const getPersistedAuth = () => {
 const persisted = getPersistedAuth();
 
 const initialState = {
-  // If persisted session exists, restore it. Otherwise start unauthenticated.
-  // For DEMO mode only: fallback to mockUser so the dashboard is visible on first load.
-  // In production, remove the mockUser fallback entirely.
-  user: persisted?.user || mockUser,
-  token: persisted?.token || 'demo-session-token',
-  isAuthenticated: persisted?.isAuthenticated ?? true, // demo: true. production: false
+  user: persisted?.user || null,
+  token: persisted?.token || null,
+  isAuthenticated: persisted?.isAuthenticated ?? false,
   loading: false,
   error: null,
-  organization: persisted?.organization || mockUser.organization,
-  members: [
-    { id: 'usr-101', name: 'Sarah Connor', email: 'sarah.connor@taskflow.so', role: 'organization_admin', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', status: 'active' },
-    { id: 'usr-102', name: 'John Connor', email: 'john.c@taskflow.so', role: 'developer', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', status: 'active' },
-    { id: 'usr-103', name: 'Marcus Wright', email: 'marcus.w@taskflow.so', role: 'project_manager', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', status: 'active' },
-    { id: 'usr-104', name: 'Katherine Brewster', email: 'kate.b@taskflow.so', role: 'tester', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80', status: 'invited' },
-  ],
+  organization: persisted?.organization || null,
+  members: [],
 };
 
 const authSlice = createSlice({
@@ -95,6 +69,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.organization = null;
+      state.members = [];
 
       // Clear persisted session
       try {
@@ -147,6 +122,9 @@ const authSlice = createSlice({
         state.organization.membersCount = Math.max(1, state.organization.membersCount - 1);
       }
     },
+    setMembersList: (state, action) => {
+      state.members = action.payload || [];
+    }
   },
 });
 
@@ -160,6 +138,7 @@ export const {
   refreshToken,
   inviteMember,
   removeMember,
+  setMembersList
 } = authSlice.actions;
 
 export default authSlice.reducer;

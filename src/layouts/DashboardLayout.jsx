@@ -170,15 +170,14 @@ const DashboardLayout = () => {
   // Each item specifies which roles can see it. If no requiredRoles, visible to all.
   const allNavLinks = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Super Admin', path: '/super-admin', icon: Compass, requiredRoles: ['super_admin'] },
-    { name: 'Organizations', path: '/organization', icon: Building2, requiredRoles: ['organization_admin', 'super_admin'] },
-    { name: 'Projects', path: '/projects', icon: FolderKanban, requiredRoles: ['developer', 'tester', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin', 'super_admin'] },
+    { name: 'Organizations', path: '/organization', icon: Building2, requiredRoles: ['organization_admin'] },
+    { name: 'Projects', path: '/projects', icon: FolderKanban, requiredRoles: ['developer', 'tester', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin'] },
     { name: 'Tasks', path: '/tasks', icon: CheckSquare },
-    { name: 'Analytics', path: '/analytics', icon: BarChart3, requiredRoles: ['developer', 'tester', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin', 'super_admin'] },
-    { name: 'AI Assistant', path: '/ai', icon: Sparkles, requiredRoles: ['developer', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin', 'super_admin'] },
-    { name: 'Automation', path: '/automation', icon: Cpu, requiredRoles: ['project_manager', 'organization_admin', 'super_admin'] },
+    { name: 'Analytics', path: '/analytics', icon: BarChart3, requiredRoles: ['developer', 'tester', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin'] },
+    { name: 'AI Assistant', path: '/ai', icon: Sparkles, requiredRoles: ['developer', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin'] },
+    { name: 'Automation', path: '/automation', icon: Cpu, requiredRoles: ['project_manager', 'organization_admin'] },
     { name: 'Notifications', path: '/notifications', icon: Bell, count: unreadCount },
-    { name: 'Settings', path: '/settings', icon: Settings, requiredRoles: ['organization_admin', 'super_admin'] },
+    { name: 'Settings', path: '/settings', icon: Settings, requiredRoles: ['organization_admin'] },
   ];
 
   // Filter nav links by user's role
@@ -514,6 +513,17 @@ const DashboardLayout = () => {
                       <Settings className="w-3.5 h-3.5 text-slate-400" />
                       Settings
                     </Link>
+
+                    {user?.role === 'super_admin' && (
+                      <Link 
+                        to="/admin" 
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-900 dark:hover:text-red-200 transition-all"
+                      >
+                        <Compass className="w-3.5 h-3.5 text-red-500" />
+                        Admin Portal
+                      </Link>
+                    )}
 
                     <div className="border-t border-slate-100 dark:border-darkBg-850/80 my-2 pt-2">
                       <button

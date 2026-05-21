@@ -21,9 +21,10 @@ const Settings = lazy(() => import('../pages/settings/Settings'));
 const Profile = lazy(() => import('../pages/profile/Profile'));
 const DesignSystem = lazy(() => import('../pages/settings/DesignSystem'));
 const Automation = lazy(() => import('../pages/automation/Automation'));
-const SuperAdmin = lazy(() => import('../pages/dashboard/SuperAdmin'));
 const AiAssistantPage = lazy(() => import('../pages/ai/AiAssistantPage'));
 const Notifications = lazy(() => import('../pages/notifications/Notifications'));
+const SuperAdminLogin = lazy(() => import('../pages/superadmin/SuperAdminLogin'));
+const SuperAdminDashboard = lazy(() => import('../pages/superadmin/SuperAdminDashboard'));
 
 /**
  * SuspenseFallback — Loading state shown while lazy chunks load.
@@ -95,19 +96,17 @@ const AppRoutes = () => {
               </RoleGuard>
             } />
 
-            {/* Super Admin ONLY */}
-            <Route path="/super-admin" element={
-              <RoleGuard allowedRoles={['super_admin']} fallback="inline">
-                <SuperAdmin />
-              </RoleGuard>
-            } />
-
             {/* Dev tool — only in development */}
             <Route path="/design-system" element={<DesignSystem />} />
             
             {/* Default route redirect */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
+
+          {/* SuperAdmin Master Console Routes */}
+          <Route path="/superadmin" element={<Navigate to="/superadmin/login" replace />} />
+          <Route path="/superadmin/login" element={<SuperAdminLogin />} />
+          <Route path="/superadmin/dashboard" element={<SuperAdminDashboard />} />
 
           {/* Public Guest Auth Pages */}
           <Route 
