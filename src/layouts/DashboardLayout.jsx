@@ -97,53 +97,50 @@ const DashboardLayout = () => {
   }, []);
 
   // Global Keyboard Shortcuts
+  // Uses Ctrl+K for command palette (standard), Alt+key for navigation (avoids browser conflicts)
   useEffect(() => {
     const handleGlobalShortcuts = (e) => {
-      if (e.ctrlKey || e.metaKey) {
+      // Ctrl+K / Cmd+K — Command Palette (industry standard, same as Linear/VS Code)
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+        return;
+      }
+
+      // Alt+key navigation shortcuts (don't conflict with browser defaults)
+      if (e.altKey && !e.ctrlKey && !e.metaKey) {
         switch (e.key.toLowerCase()) {
-          case 'k':
-            e.preventDefault();
-            setSearchOpen(true);
-            break;
           case 'd':
             e.preventDefault();
             navigate('/dashboard');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Dashboard Workspace', type: 'system' }));
             break;
           case 'p':
             e.preventDefault();
             navigate('/projects');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Projects Workspace', type: 'system' }));
             break;
           case 't':
             e.preventDefault();
             navigate('/tasks');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Sprints Tasks board', type: 'system' }));
             break;
           case 'h':
             e.preventDefault();
             navigate('/ai');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to AI Assistant Hub', type: 'system' }));
             break;
           case 'a':
             e.preventDefault();
             navigate('/automation');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Automations Canvas', type: 'system' }));
             break;
           case 'n':
             e.preventDefault();
             navigate('/notifications');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Notifications Center', type: 'system' }));
             break;
           case 's':
             e.preventDefault();
             navigate('/settings');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Settings Console', type: 'system' }));
             break;
           case 'u':
             e.preventDefault();
             navigate('/profile');
-            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Profiles Vault', type: 'system' }));
             break;
           default:
             break;
@@ -169,26 +166,28 @@ const DashboardLayout = () => {
     setOrgDropdownOpen(false);
   };
 
-  // Nav items listing (conforming to requested structure)
-  const baseNavLinks = [
+  // Nav items listing with RBAC role requirements
+  // Each item specifies which roles can see it. If no requiredRoles, visible to all.
+  const allNavLinks = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Organizations', path: '/organization', icon: Building2 },
-    { name: 'Projects', path: '/projects', icon: FolderKanban },
+    { name: 'Super Admin', path: '/super-admin', icon: Compass, requiredRoles: ['super_admin'] },
+    { name: 'Organizations', path: '/organization', icon: Building2, requiredRoles: ['organization_admin', 'super_admin'] },
+    { name: 'Projects', path: '/projects', icon: FolderKanban, requiredRoles: ['developer', 'tester', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin', 'super_admin'] },
     { name: 'Tasks', path: '/tasks', icon: CheckSquare },
-    { name: 'Analytics', path: '/analytics', icon: BarChart3 },
-    { name: 'AI Assistant', path: '/ai', icon: Sparkles },
-    { name: 'Automation', path: '/automation', icon: Cpu },
+    { name: 'Analytics', path: '/analytics', icon: BarChart3, requiredRoles: ['developer', 'tester', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin', 'super_admin'] },
+    { name: 'AI Assistant', path: '/ai', icon: Sparkles, requiredRoles: ['developer', 'frontend_lead', 'backend_lead', 'project_manager', 'organization_admin', 'super_admin'] },
+    { name: 'Automation', path: '/automation', icon: Cpu, requiredRoles: ['project_manager', 'organization_admin', 'super_admin'] },
     { name: 'Notifications', path: '/notifications', icon: Bell, count: unreadCount },
-    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: 'Settings', path: '/settings', icon: Settings, requiredRoles: ['organization_admin', 'super_admin'] },
   ];
 
-  const navLinks = user?.role === 'Administrator' 
-    ? [
-        ...baseNavLinks.slice(0, 1),
-        { name: 'Super Admin', path: '/super-admin', icon: Compass },
-        ...baseNavLinks.slice(1)
-      ]
-    : baseNavLinks;
+  // Filter nav links by user's role
+  const userRole = (user?.role || 'employee').toLowerCase().replace(/\s+/g, '_');
+  const navLinks = allNavLinks.filter((link) => {
+    if (!link.requiredRoles) return true; // No restriction — visible to all
+    if (userRole === 'super_admin') return true; // Super admin sees everything
+    return link.requiredRoles.includes(userRole);
+  });
 
   return (
     <div className="min-h-screen flex bg-slate-50 text-slate-900 dark:bg-darkBg-950 dark:text-slate-100 transition-colors duration-200 select-none text-xs">
