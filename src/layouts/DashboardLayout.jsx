@@ -66,6 +66,7 @@ const DashboardLayout = () => {
     { name: 'Tasks Board', path: '/tasks', icon: CheckSquare },
     { name: 'Analytics & Reports', path: '/analytics', icon: BarChart3 },
     { name: 'Organization', path: '/organization', icon: Building2 },
+    { name: 'Design System', path: '/design-system', icon: Sparkles },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
