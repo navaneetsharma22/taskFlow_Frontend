@@ -33,6 +33,7 @@ import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import Input from '../../components/common/Input';
 import { toggleAiAssistant } from '../../redux/slices/uiSlice';
+import { AnimatePresence } from 'framer-motion';
 
 const Tasks = () => {
   const dispatch = useDispatch();
