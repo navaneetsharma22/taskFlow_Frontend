@@ -110,7 +110,7 @@ const DashboardLayout = () => {
   };
 
   // Nav items listing (conforming to requested structure)
-  const navLinks = [
+  const baseNavLinks = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Organizations', path: '/organization', icon: Building2 },
     { name: 'Projects', path: '/projects', icon: FolderKanban },
@@ -121,6 +121,14 @@ const DashboardLayout = () => {
     { name: 'Notifications', path: '#notifications', icon: Bell, action: () => setNotifDrawerOpen(true), count: unreadCount },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
+
+  const navLinks = user?.role === 'Administrator' 
+    ? [
+        ...baseNavLinks.slice(0, 1),
+        { name: 'Super Admin', path: '/super-admin', icon: Compass },
+        ...baseNavLinks.slice(1)
+      ]
+    : baseNavLinks;
 
   return (
     <div className="min-h-screen flex bg-slate-50 text-slate-900 dark:bg-darkBg-950 dark:text-slate-100 transition-colors duration-200 select-none text-xs">
