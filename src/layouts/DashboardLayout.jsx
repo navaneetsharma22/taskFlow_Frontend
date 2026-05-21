@@ -38,6 +38,8 @@ import AiAssistant from '../components/ai/AiAssistant';
 import Badge from '../components/common/Badge';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
+import Breadcrumb from '../components/common/Breadcrumb';
+import CommandPalette from '../components/common/CommandPalette';
 
 const DashboardLayout = () => {
   const dispatch = useDispatch();
@@ -94,6 +96,64 @@ const DashboardLayout = () => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleGlobalShortcuts = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key.toLowerCase()) {
+          case 'k':
+            e.preventDefault();
+            setSearchOpen(true);
+            break;
+          case 'd':
+            e.preventDefault();
+            navigate('/dashboard');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Dashboard Workspace', type: 'system' }));
+            break;
+          case 'p':
+            e.preventDefault();
+            navigate('/projects');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Projects Workspace', type: 'system' }));
+            break;
+          case 't':
+            e.preventDefault();
+            navigate('/tasks');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Sprints Tasks board', type: 'system' }));
+            break;
+          case 'h':
+            e.preventDefault();
+            navigate('/ai');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to AI Assistant Hub', type: 'system' }));
+            break;
+          case 'a':
+            e.preventDefault();
+            navigate('/automation');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Automations Canvas', type: 'system' }));
+            break;
+          case 'n':
+            e.preventDefault();
+            navigate('/notifications');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Notifications Center', type: 'system' }));
+            break;
+          case 's':
+            e.preventDefault();
+            navigate('/settings');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Settings Console', type: 'system' }));
+            break;
+          case 'u':
+            e.preventDefault();
+            navigate('/profile');
+            dispatch(addNotification({ title: 'Shortcut Route', description: 'Redirected to Profiles Vault', type: 'system' }));
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    window.addEventListener('keydown', handleGlobalShortcuts);
+    return () => window.removeEventListener('keydown', handleGlobalShortcuts);
+  }, [navigate, dispatch]);
+
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');
@@ -118,7 +178,7 @@ const DashboardLayout = () => {
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
     { name: 'AI Assistant', path: '/ai', icon: Sparkles },
     { name: 'Automation', path: '/automation', icon: Cpu },
-    { name: 'Notifications', path: '#notifications', icon: Bell, action: () => setNotifDrawerOpen(true), count: unreadCount },
+    { name: 'Notifications', path: '/notifications', icon: Bell, count: unreadCount },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
@@ -347,6 +407,45 @@ const DashboardLayout = () => {
               <span className="hidden sm:inline">Ask AI</span>
             </button>
 
+            {/* Live Presence Avatars */}
+            <div className="hidden lg:flex items-center -space-x-2 mr-1 select-none">
+              <div className="relative group cursor-pointer shrink-0">
+                <img
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80"
+                  alt="Sarah Connor"
+                  className="w-6.5 h-6.5 rounded-full object-cover border-2 border-white dark:border-darkBg-900 shadow-md"
+                />
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 rounded-full border border-white dark:border-darkBg-900 animate-pulse" />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 text-white dark:bg-slate-105 dark:text-slate-900 font-bold text-[9px] px-2 py-1 rounded shadow-lg whitespace-nowrap z-50 transition-all">
+                  Sarah Connor (Active in Tasks)
+                </div>
+              </div>
+
+              <div className="relative group cursor-pointer shrink-0">
+                <img
+                  src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=80&q=80"
+                  alt="John Connor"
+                  className="w-6.5 h-6.5 rounded-full object-cover border-2 border-white dark:border-darkBg-900 shadow-md"
+                />
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 rounded-full border border-white dark:border-darkBg-900 animate-pulse" />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 text-white dark:bg-slate-105 dark:text-slate-900 font-bold text-[9px] px-2 py-1 rounded shadow-lg whitespace-nowrap z-50 transition-all">
+                  John Connor (Active in Dashboard)
+                </div>
+              </div>
+
+              <div className="relative group cursor-pointer shrink-0">
+                <img
+                  src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=80&q=80"
+                  alt="T-800"
+                  className="w-6.5 h-6.5 rounded-full object-cover border-2 border-white dark:border-darkBg-900 shadow-md"
+                />
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 rounded-full border border-white dark:border-darkBg-900 animate-pulse" />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 text-white dark:bg-slate-105 dark:text-slate-900 font-bold text-[9px] px-2 py-1 rounded shadow-lg whitespace-nowrap z-50 transition-all">
+                  T-800 (Active in AI Assistant)
+                </div>
+              </div>
+            </div>
+
             {/* Notification Center Trigger */}
             <button
               onClick={() => setNotifDrawerOpen(true)}
@@ -436,7 +535,8 @@ const DashboardLayout = () => {
         </header>
 
         {/* 3. MAIN CONTENT */}
-        <main className="flex-1 p-6 max-w-7xl w-full mx-auto animate-fade-in">
+        <main className="flex-1 p-6 max-w-7xl w-full mx-auto animate-fade-in space-y-4">
+          <Breadcrumb />
           <Outlet />
         </main>
 
@@ -545,78 +645,7 @@ const DashboardLayout = () => {
       </AnimatePresence>
 
       {/* 5. GUEST SHORTCUT GLOBAL SEARCH MODAL */}
-      <AnimatePresence>
-        {searchOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-start justify-center pt-24 px-4"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: -10 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: -10 }}
-              className="bg-white dark:bg-darkBg-900 border border-slate-100 dark:border-darkBg-850 rounded-16 shadow-2xl w-full max-w-lg overflow-hidden text-xs"
-            >
-              {/* Form Input */}
-              <div className="p-4 border-b border-slate-100 dark:border-darkBg-850 flex items-center gap-3">
-                <Search className="w-4 h-4 text-slate-400" />
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="Query tasks, members or projects..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 bg-transparent text-slate-900 dark:text-slate-100 outline-none text-xs"
-                />
-                <button 
-                  onClick={() => setSearchOpen(false)}
-                  className="p-1 rounded hover:bg-slate-100 dark:hover:bg-darkBg-800 text-slate-400"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Dynamic Mock results */}
-              <div className="p-3 max-h-60 overflow-y-auto space-y-1 bg-slate-50/50 dark:bg-darkBg-950/20">
-                <span className="text-[9px] font-bold text-slate-400 block px-2 py-1 uppercase tracking-widest">
-                  Quick Links / Suggested
-                </span>
-                
-                <button
-                  onClick={() => {
-                    navigate('/tasks');
-                    setSearchOpen(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left hover:bg-slate-50 dark:hover:bg-darkBg-850/50 text-slate-700 dark:text-slate-300"
-                >
-                  <CheckSquare className="w-4 h-4 text-slate-400 shrink-0" />
-                  <div>
-                    <span className="block font-bold">Workspace Tasks Board</span>
-                    <span className="text-[9px] opacity-75 block">Manage Kanban stages and checklists</span>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigate('/analytics');
-                    setSearchOpen(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left hover:bg-slate-50 dark:hover:bg-darkBg-850/50 text-slate-700 dark:text-slate-300"
-                >
-                  <BarChart3 className="w-4 h-4 text-slate-400 shrink-0" />
-                  <div>
-                    <span className="block font-bold">Team Workload Velocity Reports</span>
-                    <span className="text-[9px] opacity-75 block">Check SLA compliance rates</span>
-                  </div>
-                </button>
-              </div>
-
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <CommandPalette isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* AI Assistant drawer overlay */}
       <AiAssistant />

@@ -20,6 +20,7 @@ import DesignSystem from '../pages/settings/DesignSystem';
 import Automation from '../pages/automation/Automation';
 import SuperAdmin from '../pages/dashboard/SuperAdmin';
 import AiAssistantPage from '../pages/ai/AiAssistantPage';
+import Notifications from '../pages/notifications/Notifications';
 
 const AppRoutes = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -42,6 +43,7 @@ const AppRoutes = () => {
         <Route path="/automation" element={<Automation />} />
         <Route path="/super-admin" element={<SuperAdmin />} />
         <Route path="/ai" element={<AiAssistantPage />} />
+        <Route path="/notifications" element={<Notifications />} />
         
         {/* Default route redirect */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
