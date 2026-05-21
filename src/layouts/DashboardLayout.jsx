@@ -116,7 +116,7 @@ const DashboardLayout = () => {
     { name: 'Projects', path: '/projects', icon: FolderKanban },
     { name: 'Tasks', path: '/tasks', icon: CheckSquare },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
-    { name: 'AI Assistant', path: '#ai', icon: Sparkles, action: () => dispatch(toggleAiAssistant()) },
+    { name: 'AI Assistant', path: '/ai', icon: Sparkles },
     { name: 'Automation', path: '/automation', icon: Cpu },
     { name: 'Notifications', path: '#notifications', icon: Bell, action: () => setNotifDrawerOpen(true), count: unreadCount },
     { name: 'Settings', path: '/settings', icon: Settings },
